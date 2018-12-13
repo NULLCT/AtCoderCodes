@@ -1,16 +1,16 @@
 #include<iostream>
 using namespace std;
-int main(){
+int main(void) {
 
-    int list[5];
-    for(int i=0;i != 5;i++)cin>>list[i];
-    for(int i=0;i != 5;i++){
-        if(list[i]==list[i+1]){
-            cout<<"YES"<<endl;
-            return 0;
-        }
-    }
-    cout<<"NO"<<endl;
+	int a[5];
+	for (int i = 0; i != 5; i++)cin >> a[i];
+	for (int i = 0; i != 4; i++) {
+		if (a[i] == a[i + 1]) {
+			cout << "YES" << endl;
+			return 0;
+		}
+	}
+	cout << "NO" << endl;
 
-    return 0;
+	return 0;
 }
