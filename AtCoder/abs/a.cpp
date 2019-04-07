@@ -1,18 +1,14 @@
 #include<iostream>
-#include<string>
 using namespace std;
-int ball=0;
 int main(){
 
-    string word;
-    cin>>word;
-    for(int i=0;i != 3;i++){
-        if(word.substr(i,1) == "1"){
-            ball++;
-        }
+    int a,b;
+    cin>>a>>b;
+    if((a*b)%2==1){
+        cout<<"Odd"<<endl;
+    }else{
+        cout<<"Even"<<endl;
     }
-
-    cout<<ball<<endl;
 
     return 0;
 }
