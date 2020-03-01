@@ -1,6 +1,6 @@
-///////////////////////////////////////////
+//////////////////////////////////////////////
 //root@NULLCT$(☝ ՞ਊ ՞)☝  << "Be accept!!"//
-///////////////////////////////////////////
+//////////////////////////////////////////////
 //#define BOOST
 #include <algorithm> // min, max, swap, sort, reverse, lower_bound, upper_bound
 #include <bitset>    // bitset
@@ -23,30 +23,28 @@
 #include <vector>        // vector
 #ifdef BOOST
 #include <boost/multiprecision/cpp_int.hpp> // cpp_int
-namespace mp = boost::multiprecision;
+using namespace boost::multiprecision;
 #endif
 #define rep(i, n) for (int i = 0; i < n; i++)
 using ll = long long;
 using namespace std;
-int setup(void) { ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0); return 0; }
-int lenght(char* str) { int i = 0; while (str[i])i++; return i; }
-int gcd(int a, int b) { if (a % b == 0) { return(b); } else { return(gcd(b, a % b)); } }
-int lcm(int a, int b) { return a * b / gcd(a, b); }
-int iinput(void) { int a = 0; cin >> a; return a; }
-int dinput(void) { double a = 0; cin >> a; return a; }
-string sinput(void) { string a = ""; cin >> a; return a; }
-int kuriup(double a) { int b = int(a); if (a != b) { return b + 1; } else { return b; } }
-int kuridown(double a) { int b = int(a); return b; }
+int setup(void){ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);return 0;}
+int lenght(char *str){int i = 0;while (str[i])i++;return i;}
+int gcd(int a, int b){if (a%b == 0){return(b);}else{return(gcd(b, a%b));}}
+int lcm(int a, int b){return a * b / gcd(a, b);}
+int iinput(void){int a = 0;cin >> a;return a;}
+int dinput(void) {double a = 0;cin>> a;return a;}
+string sinput(void){string a = "";cin >> a;return a;}
+int kuriup(double a) {int b = int(a);if (a != b) {return b + 1;} else {return b;}}
+int kuridown(double a){int b = int(a);return b;}
 int run(void);
-int main() { setup(); run(); return 0; }
-/////////////////////////////////////////////////////////////////////////////////////////
-int run(void) {
+int main(){setup();run();return 0;}
+#define SIZE 15
+int run(void){
 
-  int n;
-  cin>>n;
-  cout<<(n+1)/2<<endl;
+ double n=dinput();
+ cout<<kuriup(n/2)<<endl;
 
   return 0;
 }
-
 
