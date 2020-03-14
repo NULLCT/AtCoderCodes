@@ -23,7 +23,7 @@
 #include <vector>        // vector
 #ifdef BOOST
 #include <boost/multiprecision/cpp_int.hpp> // cpp_int
-using namespace boost::multiprecision;
+namespace mp = boost::multiprecision;
 #endif
 #define rep(i, n) for (int i = 0; i < n; i++)
 using ll = long long;
@@ -40,19 +40,13 @@ int kuridown(double a) { int b = int(a); return b; }
 int run(void);
 int main() { setup(); run(); return 0; }
 /////////////////////////////////////////////////////////////////////////////////////////
-struct nums {
-  int s;
-  int c;
-};
-bool paircompare(const pair<int,int>& firstelof, const pair<int,int>& secondelof){
-  return firstelof.first > secondelof.second;
-}
 int run(void) {
 
-  int n=iinput();
-  n++;
-  cout<<n/2<<endl;
+  int n;
+  cin>>n;
+  cout<<(n+1)/2<<endl;
 
   return 0;
 }
+
 
