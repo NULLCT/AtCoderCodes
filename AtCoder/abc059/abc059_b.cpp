@@ -1,62 +1,131 @@
-/*-----------------------------------------------,
-|  __                                       __   |
-| |  |--.-----.---.-.----.----.-----.-----.|  |_ |
-| |  _  |  -__|  _  |  __|  __|  -__|  _  ||   _||
-| |_____|_____|___._|____|____|_____|   __||____||
-|                                   |__|         |
-`-----------------------------------------------*/
-#include<algorithm>
-#include<array>
-#include<bitset>
-#include<cmath>
-#include<complex>
-#include<deque>
-#include<functional>
-#include<iomanip>
-#include<iostream>
-#include<iterator>
-#include<map>
-#include<numeric>
-#include<queue>
-#include<set>
-#include<stack>
-#include<string>
-#include<unordered_map>
-#include<unordered_set>
-#include<utility>
-#include<vector>
-typedef long long ll; typedef long double ld ;using namespace std;
-#define INF 1000000000000
-#define MOD 10000007
-#define ALL(name) (name).begin(),(name).end()
-#define REP(counter, limit) for (long long counter = 0; counter < limit; counter++)
-int gcd(int a, int b) { if (a % b == 0) { return(b); } else { return(gcd(b, a % b)); } }
-int lcm(int a, int b) { return a * b / gcd(a, b); }
-bool primenum(int a) { if (a == 1) { return false; }if (a == 2) { return true; }if (a % 2 == 0) { return false; }for (int i = 3; i < sqrt(a) + 1; i += 2) { if (a != i) { if (a % i == 0) { return false; } } }return true; }
-struct setupios{setupios(){ios::sync_with_stdio(0);cin.tie(nullptr); /*cout<<fixed<<setprecision(20);*/};}setupios;
-int main() {
+//////////////////////////
+//      _        ____   //
+//  U  /"\  u U /"___|  //
+//   \/ _ \/  \| | u    //
+//   / ___ \   | |/__   //
+//  /_/   \_\   \____|  //
+//   \\    >>  _// \\   //
+//  (__)  (__)(__)(__)  //
+//  Compro by NULL_CT©  //
+//////////////////////////
+// STL libs
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <cctype>
+#include <chrono>
+#include <climits>
+#include <cmath>
+#include <complex>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <thread>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
-  string a,b;
-  cin>>a>>b;
-  if(a.size()>b.size()){
-    cout<<"GREATER"<<endl;
-    return 0;
-  }else if(a.size()<b.size()){
-    cout<<"LESS"<<endl;
-    return 0;
-  }else{
-    int n=a.size();
-    for(int i=0;i<n;i++){
-      if(stoi(a.substr(i,1))>stoi(b.substr(i,1))){
-        cout<<"GREATER"<<endl;
-        return 0;
-      }else if(stoi(a.substr(i,1))<stoi(b.substr(i,1))){
-        cout<<"LESS"<<endl;
-        return 0;
-      }
+//Boost
+#include <boost/range/irange.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
+
+#define REP(I, LIM) for (int I = 0; I < (LIM); I++)
+#define ALL(LIST) (LIST.begin()), (LIST.end())
+
+using namespace std;
+using boost::irange;
+using boost::multiprecision::cpp_int;
+
+typedef long long ll;
+
+const int MOD = pow(10,9)+7;
+
+vector<ll> divisor(ll &_n) {
+  vector<ll> head, tail;
+  for (long i = 1; i * i <= _n; i++) {
+    if (_n % i == 0) {
+      head.push_back(i);
+      if (i * i != _n)
+        tail.push_back(_n / i);
     }
-    cout<<"EQUAL"<<endl;
+  }
+  head.insert(head.end(), tail.rbegin(), tail.rend());
+  return head;
+}
+
+ll kadanes(vector<ll> &_ls) {
+  ll highestMax = 0, currentMax = 0, length = _ls.size();
+  for (ll i = 0; i < length; i++) {
+    currentMax = max(_ls[i], currentMax + _ls[i]);
+    highestMax = max(highestMax, currentMax);
+  }
+  return highestMax;
+}
+
+class UnionFind {
+public:
+  vector<ll> par;
+
+  UnionFind(ll N) : par(N) {
+    for (ll i = 0; i < N; i++)
+      par[i] = i;
   }
 
+  ll root(ll x) {
+    if (par[x] == x)
+      return x;
+    return par[x] = root(par[x]);
+  }
+
+  void unite(ll x, ll y) {
+    ll rx = root(x);
+    ll ry = root(y);
+    if (rx == ry)
+      return;
+    par[rx] =
+        ry;
+  }
+
+  bool same(ll x, ll y) {
+    ll rx = root(x);
+    ll ry = root(y);
+    return rx == ry;
+  }
+};
+
+struct init {
+  init() {
+    cin.tie(0);
+    ios::sync_with_stdio(0);
+    // cout<<fixed<<setprecision(20);
+  }
+} init;
+
+/*----------------------------*/
+
+int main() {
+  cpp_int a, b;
+  cin >> a >> b;
+  if (a < b) {
+    cout<<"LESS\n";
+  }else if (a > b) {
+    cout<<"GREATER\n";
+  } else {
+    cout<<"EQUAL\n";
+  }
 }
 
