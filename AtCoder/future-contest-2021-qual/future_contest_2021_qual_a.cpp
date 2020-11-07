@@ -134,7 +134,7 @@ inline void execution() {
           abs(list[98].first - list[100].first) +
               abs(list[98].second - list[100].second) +
               abs(list[100].first - list[99].first) +
-              abs(list[100].second - list[99].second) + 5) {
+              abs(list[100].second - list[99].second) + 3) {
         swap(list[99],list[100]);
         //X
         if (list[i-1].first > list[i].first) {
