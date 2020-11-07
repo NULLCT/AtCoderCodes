@@ -124,6 +124,104 @@ inline void execution() {
   }
 
   for (int i = 1; i < 101; i++) {
+    if (i == 98) {
+      if (abs(list[98].first - list[99].first) + abs(list[98].second - list[99].second) + abs(list[99].first - list[100].first) + abs(list[99].second - list[100].second) >
+          abs(list[98].first - list[100].first) +
+              abs(list[98].second - list[100].second) + abs(list[100].first - list[99].first) + abs(list[100].second - list[99].second) + 1) {
+
+                //98 -> 100
+                // X
+                if (list[98].first > list[100].first) {
+                  for (int j = 0; j < list[98].first - list[100].first; j++) {
+                    cout << "L";
+                  }
+                } else if (list[98].first < list[100].first) {
+                  for (int j = 0; j < list[100].first - list[98].first; j++) {
+                    cout << "R";
+                  }
+                }
+                // Y
+                if (list[98].second > list[100].second) {
+                  for (int j = 0; j < list[98].second - list[100].second; j++) {
+                    cout << "U";
+                  }
+                } else if (list[98].second < list[100].second) {
+                  for (int j = 0; j < list[100].second - list[98].second; j++) {
+                    cout << "D";
+                  }
+                }
+                cout<<"I";
+
+                //100 -> 99
+                bool firsttr=false;
+                int vect = 0;
+                // 1 => L or U (decrease)
+                // 2 => R or D (increase)
+                if (0 < abs(list[100].first - list[100].first)) {
+                  firsttr=true;
+                }
+                bool secondtr=false;
+                if (0 < abs(list[100].first - list[100].first)) {
+                  if (!firsttr)
+                    secondtr=true;
+                }
+                //X
+                if (list[100].first > list[99].first) {
+                  for (int j = 0; j < list[100].first - list[99].first; j++) {
+                    if (firsttr and list[100].first - list[99].first - 1 == j) {
+                      vect=1;
+                      break;
+                    }
+                    cout << "L";
+                  }
+                } else if (list[100].first < list[99].first) {
+                  for (int j = 0; j < list[99].first - list[100].first; j++) {
+                    if (firsttr and list[100].first - list[99].first - 1 == j) {
+                      vect=2;
+                      break;
+                    }
+                    cout << "R";
+                  }
+                }
+                // Y
+                if (list[100].second > list[99].second) {
+                  for (int j = 0; j < list[100].second - list[99].second; j++) {
+                    if (secondtr and list[100].second - list[99].second - 1 == j) {
+                      vect=1;
+                      break;
+                    }
+                    cout << "U";
+                  }
+                } else if (list[100].second < list[99].second) {
+                  for (int j = 0; j < list[99].second - list[100].second; j++) {
+                    if (secondtr and list[100].second - list[99].second - 1 == j) {
+                      vect=2;
+                      break;
+                    }
+                    cout << "D";
+                  }
+                }
+
+                // 1 => L or U (decrease)
+                // 2 => R or D (increase)
+                if (firsttr) {
+                  if (vect == 1) { // L
+                    cout<<"OLIRI";
+                  } else { // R
+                    cout<<"ORILI";
+                  }
+                }
+                if (secondtr) {
+                  if (vect == 1) { // U
+                    cout<<"OUIDI";
+                  } else { // D
+                    cout<<"ODIUI";
+                  }
+                }
+                return;
+                //result
+      }
+    }
     //X
     if (list[i-1].first > list[i].first) {
       for (int j = 0; j < list[i-1].first - list[i].first; j++) {
@@ -134,6 +232,7 @@ inline void execution() {
         cout<<"R";
       }
     }
+
     //Y
     if (list[i-1].second > list[i].second) {
       for (int j = 0; j < list[i-1].second - list[i].second; j++) {
@@ -144,6 +243,7 @@ inline void execution() {
         cout<<"D";
       }
     }
+
     cout<<"I";
   }
 }
