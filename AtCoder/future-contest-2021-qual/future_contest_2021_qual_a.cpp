@@ -125,7 +125,7 @@ inline void execution() {
 
   for (int i = 1; i < 101; i++) {
 
-    if (i == 98) {
+    if (i == 99) {
       //98 99 100
       if (abs(list[98].first - list[99].first) +
               abs(list[98].second - list[99].second) +
@@ -135,67 +135,66 @@ inline void execution() {
               abs(list[98].second - list[100].second) +
               abs(list[100].first - list[99].first) +
               abs(list[100].second - list[99].second) + 1) {
-        // X
-        i=100;
-        if (list[98].first > list[i].first) {
-          for (int j = 0; j < list[98].first - list[i].first; j++) {
-            cout << "L";
+        swap(list[99],list[100]);
+        bool tr=false;
+        //X
+        if (list[i-1].first > list[i].first) {
+          for (int j = 0; j < list[i-1].first - list[i].first; j++) {
+            cout<<"L";
           }
-        } else if (list[98].first < list[i].first) {
-          for (int j = 0; j < list[i].first - list[98].first; j++) {
-            cout << "R";
-          }
-        }
-        // Y
-        if (list[98].second > list[i].second) {
-          for (int j = 0; j < list[98].second - list[i].second; j++) {
-            cout << "U";
-          }
-        } else if (list[98].second < list[i].second) {
-          for (int j = 0; j < list[i].second - list[98].second; j++) {
-            cout << "D";
+        } else if (list[i-1].first < list[i].first) {
+          for (int j = 0; j < list[i].first - list[i-1].first; j++) {
+            cout<<"R";
           }
         }
-        cout << "I";
-
-        i=99;
-        bool ed=false;
-        if (list[100].first > list[i].first) {
-          for (int j = 0; j < list[100].first - list[i].first-1; j++) {
-            cout << "L";
+        //Y
+        if (list[i-1].second > list[i].second) {
+          for (int j = 0; j < list[i-1].second - list[i].second; j++) {
+            cout<<"U";
           }
-          if (!ed) {
-            cout<<"OLIRI";
-            ed=true;
-          }
-        } else if (list[100].first < list[i].first) {
-          for (int j = 0; j < list[i].first - list[100].first-1; j++) {
-            cout << "R";
-          }
-          if (!ed) {
-            cout<<"ORILI";
-            ed=true;
+        } else if (list[i-1].second < list[i].second) {
+          for (int j = 0; j < list[i].second - list[i-1].second; j++) {
+            cout<<"D";
           }
         }
-        // Y
-        if (list[100].second > list[i].second) {
-          for (int j = 0; j < list[100].second - list[i].second-1; j++) {
-            cout << "U";
+        cout<<"I";
+        //2
+        if (list[i-1].first > list[i].first) {
+          for (int j = 0; j < list[i-1].first - list[i].first; j++) {
+            if (!tr and j + 1 == list[i - 1].first - list[i].first) {
+              cout<<"OLIRI";
+              return;
+            }
+            cout<<"L";
           }
-          if (!ed) {
-            cout<<"OUIDI";
-            ed=true;
-          }
-        } else if (list[100].second < list[i].second) {
-          for (int j = 0; j < list[i].second - list[100].second-1; j++) {
-            cout << "D";
-          }
-          if (!ed) {
-            cout<<"ODIUI";
-            ed=true;
+        } else if (list[i-1].first < list[i].first) {
+          for (int j = 0; j < list[i].first - list[i-1].first; j++) {
+            if (!tr and j + 1 == list[i - 1].first - list[i].first) {
+              cout<<"ORILI";
+              return;
+            }
+            cout<<"R";
           }
         }
-        return;
+        //Y
+        if (list[i-1].second > list[i].second) {
+          for (int j = 0; j < list[i-1].second - list[i].second; j++) {
+            if (!tr and j + 1 == list[i - 1].second - list[i].second) {
+              cout<<"OUIDI";
+              return;
+            }
+            cout<<"U";
+          }
+        } else if (list[i-1].second < list[i].second) {
+          for (int j = 0; j < list[i].second - list[i-1].second; j++) {
+            if (!tr and j + 1 == list[i - 1].second - list[i].second) {
+              cout<<"ODIUI";
+              return;
+            }
+            cout<<"D";
+          }
+        }
+        cout<<"I";
       }
     }
 
