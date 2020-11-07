@@ -134,8 +134,9 @@ inline void execution() {
           abs(list[98].first - list[100].first) +
               abs(list[98].second - list[100].second) +
               abs(list[100].first - list[99].first) +
-              abs(list[100].second - list[99].second) + 3) {
+              abs(list[100].second - list[99].second) + 1) {
         swap(list[99],list[100]);
+        bool tr=false;
         //X
         if (list[i-1].first > list[i].first) {
           for (int j = 0; j < list[i-1].first - list[i].first; j++) {
@@ -158,57 +159,43 @@ inline void execution() {
         }
         cout<<"I";
         i++;
-        int type=-1;
         //2
         if (list[i-1].first > list[i].first) {
           for (int j = 0; j < list[i-1].first - list[i].first; j++) {
-            if (j + 1 == list[i - 1].first - list[i].first) {
-              type=0;
-              break;
+            if (!tr and j + 1 == list[i - 1].first - list[i].first) {
+              cout<<"OLIRI";
+              return;
             }
             cout<<"L";
           }
         } else if (list[i-1].first < list[i].first) {
           for (int j = 0; j < list[i].first - list[i-1].first; j++) {
-            if (j + 1 == list[i - 1].first - list[i].first) {
-              type = 1;
-              break;
+            if (!tr and j + 1 == list[i - 1].first - list[i].first) {
+              cout<<"ORILI";
+              return;
             }
             cout<<"R";
           }
         }
-
         //Y
         if (list[i-1].second > list[i].second) {
           for (int j = 0; j < list[i-1].second - list[i].second; j++) {
-            if (type == -1 and j + 1 == list[i - 1].second - list[i].second) {
-              type = 2;
-              break;
+            if (!tr and j + 1 == list[i - 1].second - list[i].second) {
+              cout<<"OUIDI";
+              return;
             }
             cout<<"U";
           }
         } else if (list[i-1].second < list[i].second) {
           for (int j = 0; j < list[i].second - list[i-1].second; j++) {
-            if (type == -1 and j + 1 == list[i - 1].second - list[i].second) {
-              type = 3;
-              break;
+            if (!tr and j + 1 == list[i - 1].second - list[i].second) {
+              cout<<"ODIUI";
+              return;
             }
             cout<<"D";
           }
         }
-        if (type == 0) {//L
-          cout<<"OLIRI";
-        }
-        if (type == 1) {//R
-          cout<<"ORILI";
-        }
-        if (type == 2) {//U
-          cout<<"OUIDI";
-        }
-        if (type == 3) {//D
-          cout<<"ODIUI";
-        }
-        return;
+        cout<<"I";
       }
     }
 
