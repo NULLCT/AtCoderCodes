@@ -117,38 +117,111 @@ int main() {
 //--------------------------------------------------------------
 inline void execution() {
   vector<vector<int>> dise(20,vector<int>(20,0));
-  int bx,by;
-  bx=by=0;
-  for (int i = 0; i < 100; i++) {
-    int x, y;
-    cin>>y>>x;
+  vector<pair<int,int>> list(101);
+  list[0]=make_pair(0, 0);
+  for (int i = 1; i < 101; i++) {
+    cin>>list[i].second>>list[i].first;
+  }
+
+  for (int i = 1; i < 101; i++) {
+
+    if (i == 98) {
+      //98 99 100
+      if (abs(list[98].first - list[99].first) +
+              abs(list[98].second - list[99].second) +
+              abs(list[99].first - list[100].first) +
+              abs(list[99].second - list[100].second) >
+          abs(list[98].first - list[100].first) +
+              abs(list[98].second - list[100].second) +
+              abs(list[100].first - list[99].first) +
+              abs(list[100].second - list[99].second) + 1) {
+        // X
+        i=100;
+        if (list[98].first > list[i].first) {
+          for (int j = 0; j < list[98].first - list[i].first; j++) {
+            cout << "L";
+          }
+        } else if (list[98].first < list[i].first) {
+          for (int j = 0; j < list[i].first - list[98].first; j++) {
+            cout << "R";
+          }
+        }
+        // Y
+        if (list[98].second > list[i].second) {
+          for (int j = 0; j < list[98].second - list[i].second; j++) {
+            cout << "U";
+          }
+        } else if (list[98].second < list[i].second) {
+          for (int j = 0; j < list[i].second - list[98].second; j++) {
+            cout << "D";
+          }
+        }
+        cout << "I";
+
+        i=99;
+        bool ed=false;
+        if (list[100].first > list[i].first) {
+          for (int j = 0; j < list[100].first - list[i].first-1; j++) {
+            cout << "L";
+          }
+          if (!ed) {
+            cout<<"OLIRI";
+            ed=true;
+          }
+        } else if (list[100].first < list[i].first) {
+          for (int j = 0; j < list[i].first - list[100].first-1; j++) {
+            cout << "R";
+          }
+          if (!ed) {
+            cout<<"ORILI";
+            ed=true;
+          }
+        }
+        // Y
+        if (list[100].second > list[i].second) {
+          for (int j = 0; j < list[100].second - list[i].second-1; j++) {
+            cout << "U";
+          }
+          if (!ed) {
+            cout<<"OUIDI";
+            ed=true;
+          }
+        } else if (list[100].second < list[i].second) {
+          for (int j = 0; j < list[i].second - list[100].second-1; j++) {
+            cout << "D";
+          }
+          if (!ed) {
+            cout<<"ODIUI";
+            ed=true;
+          }
+        }
+        return;
+      }
+    }
+
+//-----------------------------------------------------------------------------
 
     //X
-    if (bx > x) {
-      for (int i = 0; i < bx - x; i++) {
+    if (list[i-1].first > list[i].first) {
+      for (int j = 0; j < list[i-1].first - list[i].first; j++) {
         cout<<"L";
       }
-    } else if (bx < x) {
-      for (int i = 0; i < x - bx; i++) {
+    } else if (list[i-1].first < list[i].first) {
+      for (int j = 0; j < list[i].first - list[i-1].first; j++) {
         cout<<"R";
       }
     }
-
     //Y
-    if (by > y) {
-      for (int i = 0; i < by - y; i++) {
+    if (list[i-1].second > list[i].second) {
+      for (int j = 0; j < list[i-1].second - list[i].second; j++) {
         cout<<"U";
       }
-    } else if (by < y) {
-      for (int i = 0; i < y - by; i++) {
+    } else if (list[i-1].second < list[i].second) {
+      for (int j = 0; j < list[i].second - list[i-1].second; j++) {
         cout<<"D";
       }
     }
-
     cout<<"I";
-
-    bx = x;
-    by = y;
   }
 }
 
