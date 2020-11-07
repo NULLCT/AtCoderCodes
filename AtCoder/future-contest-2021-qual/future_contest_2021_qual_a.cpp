@@ -124,10 +124,11 @@ inline void execution() {
   }
 
   for (int i = 1; i < 101; i++) {
-    if (i == 98) {
-      if (abs(list[98].first - list[99].first) + abs(list[98].second - list[99].second) + abs(list[99].first - list[100].first) + abs(list[99].second - list[100].second) >
+    if (i == 99) {
+      if (abs(list[98].first - list[99].first) +
+              abs(list[98].second - list[99].second) >
           abs(list[98].first - list[100].first) +
-              abs(list[98].second - list[100].second) + abs(list[100].first - list[99].first) + abs(list[100].second - list[99].second) + 1) {
+              abs(list[98].second - list[100].second)) {
 
                 //98 -> 100
                 // X
