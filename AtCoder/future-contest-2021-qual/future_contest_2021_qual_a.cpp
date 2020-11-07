@@ -116,37 +116,40 @@ int main() {
 #define int long
 //--------------------------------------------------------------
 inline void execution() {
-  vector<vector<int>> dise(20,vector<int>(20,0));
-  vector<pair<int,int>> list(101);
-  list[0]=make_pair(0, 0);
-  for (int i = 1; i < 101; i++) {
-    cin>>list[i].second>>list[i].first;
-  }
+  vector<vector<int>> dise(20,vector<int>(20));
+  int bx,by;
+  cin>>by>>bx;
+  for (int i = 0; i < 99; i++) {
+    int x, y;
+    cin>>y>>x;
 
-  for (int i = 1; i < 101; i++) {
     //X
-    if (list[i-1].first > list[i].first) {
-      for (int j = 0; j < list[i-1].first - list[i].first; j++) {
+    if (bx > x) {
+      for (int i = 0; i < bx - x; i++) {
         cout<<"L";
       }
-    } else if (list[i-1].first < list[i].first) {
-      for (int j = 0; j < list[i].first - list[i-1].first; j++) {
+    } else if (bx < x) {
+      for (int i = 0; i < x - bx; i++) {
         cout<<"R";
       }
     }
 
     //Y
-    if (list[i-1].second > list[i].second) {
-      for (int j = 0; j < list[i-1].second - list[i].second; j++) {
+    if (by > y) {
+      for (int i = 0; i < by - y; i++) {
         cout<<"U";
       }
-    } else if (list[i-1].second < list[i].second) {
-      for (int j = 0; j < list[i].second - list[i-1].second; j++) {
+    } else if (by < y) {
+      for (int i = 0; i < y - by; i++) {
         cout<<"D";
       }
     }
 
     cout<<"I";
+
+    bx = x;
+    by = y;
   }
+  cout<<"\n";
 }
 
