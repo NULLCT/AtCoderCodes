@@ -1,17 +1,12 @@
-use std::io;
+use proconio::input;
 
-fn main(){
-    let mut line = String::new();
-    io::stdin().read_line(&mut line).unwrap();
-
-    let mut it = line.split_whitespace();
-    let a = it.next().unwrap().parse::<usize>().unwrap();
-    let b = it.next().unwrap().parse::<usize>().unwrap();
-
-    if (a*b) % 2 == 0 {
-        println!("Even");
-    } else {
-        println!("Odd");
+fn main() {
+    input! {
+        a: i64,
+        b: i64,
     }
+
+    let answer = if a % 2 == 0 || b % 2 == 0 { "Even" } else { "Odd" };
+    println!("{}", answer)
 }
 
