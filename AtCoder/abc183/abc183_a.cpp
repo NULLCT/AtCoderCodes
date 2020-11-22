@@ -181,13 +181,10 @@ int main() {
 //--------------------------------------------------------------
 inline void execution() {
   int x;
-  cin>>x;
-
-  if (x < 0) {
+  cin >> x;
+  if (x >= 0) {
+    cout<<x<<"\n";
+  }else {
     cout<<0<<"\n";
   }
-  if (0 <= x) {
-    cout<<x<<"\n";
-  }
 }
-
