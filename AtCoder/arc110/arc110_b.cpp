@@ -209,22 +209,30 @@ signed main() {
 }
 
 //--------------------------------------------------------------
-int N;
-string T;
-string S="110";
-long ans;
 inline void execution() {
-	cin>>N>>T;
-	for(int I=0;I<3;I++)
-	{
-		bool ok=true;
-		for(int i=0;i<N;i++)ok=ok&&S[(I+i)%3]==T[i];
-		if(ok)
-		{
-			long long t=(N+I+2)/3;
-			ans+=10000000000-t+1;
-		}
-	}
-	cout<<ans<<endl;
+  int N; cin >> N;
+  string S; cin >> S;
+  int INF=10000000000;
+  if(S == "1"){cout << 2*INF << endl; return;}
+  else if(S == "0"){cout << INF << endl; return;}
+  else if(S == "11"){cout << INF << endl; return;}
+  else if(S == "10"){cout << INF << endl; return;}
+  else if(S == "01"){cout << INF-1 << endl; return;}
+  else if(S == "00"){cout << 0 << endl; return;}
+  else {
+    for(int i=0;i<N-2;i++){
+      if(S.substr(i,3) == "110"){continue;}
+      if(S.substr(i,3) == "101"){continue;}
+      if(S.substr(i,3) == "011"){continue;}
+      else {cout << 0 << endl; return;}
+    }
+  }
+  if(S[0] == '1' && S[1] == '1' && S[2] == '0') N -= 3;
+  else if(S[0] == '1' && S[1] == '0' && S[2] == '1') N -= 2;
+  else if(S[0] == '0' && S[1] == '1' && S[2] == '1') N -= 1;
+  
+  int syo = (N+2) / 3;
+  int ans = INF - syo;
+  cout << ans << endl;
 }
 
