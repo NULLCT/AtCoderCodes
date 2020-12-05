@@ -209,20 +209,22 @@ signed main() {
 }
 
 //--------------------------------------------------------------
+int N;
+string T;
+string S="110";
+long ans;
 inline void execution() {
-  int n; cin >> n;
-  string t; cin >> t;
-  string s = "110";
-  int ans = 0;
-  for (int i = 0; i < 3; i++) {
-    bool ok = true;
-    for (int j = 0, k = i; j < n; j++, k = (k + 1) % 3) {
-      if (t[j] != s[k]) { ok = false; break; }
-    }
-    if (ok) {
-      ans += 1 + ((long long)3e10 - i - n) / 3;
-    }
-  }
-  cout << ans << endl;
+	cin>>N>>T;
+	for(int I=0;I<3;I++)
+	{
+		bool ok=true;
+		for(int i=0;i<N;i++)ok=ok&&S[(I+i)%3]==T[i];
+		if(ok)
+		{
+			long long t=(N+I+2)/3;
+			ans+=10000000000-t+1;
+		}
+	}
+	cout<<ans<<endl;
 }
 
