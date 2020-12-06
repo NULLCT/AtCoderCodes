@@ -210,6 +210,6 @@ signed main() {
 
 //--------------------------------------------------------------
 inline void execution() {
-  std::this_thread::sleep_for(std::chrono::milliseconds(1989));
+  std::this_thread::sleep_for(std::chrono::milliseconds(1800));
   cout<<"Hello, world!\n";
 }
