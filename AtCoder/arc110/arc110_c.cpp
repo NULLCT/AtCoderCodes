@@ -1,3 +1,4 @@
+#pragma GCC optimize("O3")
 //      _        ____   //
 //  U  /"\  u U /"___|  //
 //   \/ _ \/  \| | u    //
@@ -6,8 +7,6 @@
 //   \\    >>  _// \\   //
 //  (__)  (__)(__)(__)  //
 //  Compro by NULLCT   //
-
-#pragma GCC optimize("O0")
 
 #include <algorithm>
 #include <array>
