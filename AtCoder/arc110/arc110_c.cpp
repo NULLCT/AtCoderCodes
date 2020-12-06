@@ -1,3 +1,6 @@
+#pragma GCC target("avx")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 //      _        ____   //
 //  U  /"\  u U /"___|  //
 //   \/ _ \/  \| | u    //
@@ -210,47 +213,41 @@ signed main() {
 
 //--------------------------------------------------------------
 inline void execution() {
-  int n,p[200005];
-  vector<int> res;
+  int n;
   cin >> n;
-  for (int i = 1; i <= n; i++)
-    cin >> p[i];
 
-  for (int i = 1; i < n;) {
-    if (p[i] == i) {
-      cout << -1 << endl;
-      return;
-    }
+  vector<int> p(n);
+  vector<int> pos(n);
+  vector<bool> used(n-1,false);
+  vector<int> ans;
 
-    int ind = -1;
-    for (int j = i + 1; j <= n; j++)
-      if (p[j] == i) {
-        ind = j;
-        break;
-      }
-
-    if (ind == -1) {
-      cout << -1 << endl;
-      return;
-    }
-
-    for (int j = ind - 1; j >= i; j--) {
-      res.push_back(j);
-      swap(p[j], p[j + 1]);
-    }
-
-    i = ind;
+  for(int i=0;i<n;i++){
+    cin>>p[i];p[i]--;
+    pos[p[i]]=i;
   }
 
-  for (int i = 1; i <= n; i++)
-    if (p[i] != i) {
-      cout << -1 << endl;
+  for (int i = 0; i < n; i++) {
+    while(p[i] != i) {
+      if (used[i]) {
+        cout<<"-1"<<"\n";
+        return;
+      }
+
+      ans.push_back(pos[i]);
+      used[pos[i]-1]=true;
+      pos[p[pos[i]-1]]++;
+      pos[i]--;
+      swap(p[pos[i]],p[pos[i]+1]);
+    }
+  }
+
+  for (auto i : used)
+    if (!i) {
+      cout<<"-1\n";
       return;
     }
 
-  for (int x : res)
-    cout << x << endl;
-
-  return;
+  for (auto i : ans)
+    cout<<i<<"\n";
 }
 
