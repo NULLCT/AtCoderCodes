@@ -1,4 +1,3 @@
-//////////////////////////
 //      _        ____   //
 //  U  /"\  u U /"___|  //
 //   \/ _ \/  \| | u    //
@@ -7,11 +6,15 @@
 //   \\    >>  _// \\   //
 //  (__)  (__)(__)(__)  //
 //  Compro by NULLCT   //
-//////////////////////////
-// STL libs
+
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("avx")
+
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <cassert>
 #include <cctype>
 #include <chrono>
 #include <cinttypes>
@@ -27,6 +30,7 @@
 #include <ios>
 #include <iostream>
 #include <iterator>
+#include <list>
 #include <map>
 #include <numeric>
 #include <ostream>
@@ -41,104 +45,135 @@
 #include <utility>
 #include <vector>
 
-// Boost
-#include <boost/multiprecision/cpp_int.hpp>
-#include <boost/range/irange.hpp>
-
-#define ALL(LIST) (LIST.begin()), (LIST.end())
+#define int int64_t
 
 using namespace std;
-using boost::irange;
-using boost::multiprecision::cpp_int;
 
-constexpr long MOD = 1000000007;
-
-class ModNum {
+template <int MOD> class ModNum {
 public:
-  long num;
+  int num;
 
-  ModNum(long long x = 0) : num((x % MOD + MOD) % MOD) {}
-
-  ModNum operator-() const { return ModNum(-num); }
-  ModNum &operator+=(const ModNum &a) {
-    if ((num += a.num) >= MOD)
+  constexpr ModNum(int v = 0) noexcept : num(v % MOD) {
+    if (num < 0)
+      num += MOD;
+  }
+  constexpr int getmod() { return MOD; }
+  constexpr ModNum operator-() const noexcept { return num ? MOD - num : 0; }
+  constexpr ModNum operator+(const ModNum &r) const noexcept {
+    return ModNum(*this) += r;
+  }
+  constexpr ModNum operator-(const ModNum &r) const noexcept {
+    return ModNum(*this) -= r;
+  }
+  constexpr ModNum operator*(const ModNum &r) const noexcept {
+    return ModNum(*this) *= r;
+  }
+  constexpr ModNum operator/(const ModNum &r) const noexcept {
+    return ModNum(*this) /= r;
+  }
+  constexpr ModNum &operator+=(const ModNum &r) noexcept {
+    num += r.num;
+    if (num >= MOD)
       num -= MOD;
     return *this;
   }
-  ModNum &operator-=(const ModNum &a) {
-    if ((num += MOD - a.num) >= MOD)
-      num -= MOD;
+  constexpr ModNum &operator-=(const ModNum &r) noexcept {
+    num -= r.num;
+    if (num < 0)
+      num += MOD;
     return *this;
   }
-  ModNum &operator*=(const ModNum &a) {
-    (num *= a.num) %= MOD;
+  constexpr ModNum &operator*=(const ModNum &r) noexcept {
+    num = num * r.num % MOD;
     return *this;
   }
-  ModNum &operator/=(const ModNum &a) { return (*this) *= a.inv(); }
-  ModNum operator+(const ModNum &a) const {
-    ModNum res(*this);
-    return res += a;
+  constexpr ModNum &operator/=(const ModNum &r) noexcept {
+    int a = r.num, b = MOD, u = 1, v = 0;
+    while (b) {
+      int t = a / b;
+      a -= t * b;
+      swap(a, b);
+      u -= t * v;
+      swap(u, v);
+    }
+    num = num * u % MOD;
+    if (num < 0)
+      num += MOD;
+    return *this;
   }
-  ModNum operator-(const ModNum &a) const {
-    ModNum res(*this);
-    return res -= a;
+  constexpr bool operator==(const ModNum &r) const noexcept {
+    return this->num == r.num;
   }
-  ModNum operator*(const ModNum &a) const {
-    ModNum res(*this);
-    return res *= a;
+  constexpr bool operator!=(const ModNum &r) const noexcept {
+    return this->num != r.val;
   }
-  ModNum operator/(const ModNum &a) const {
-    ModNum res(*this);
-    return res /= a;
+  friend constexpr ostream &operator<<(ostream &os, const ModNum<MOD> &x) noexcept {
+    return os << x.num;
   }
-
-  ModNum pow(long t) const {
-    if (!t)
+  friend constexpr ModNum<MOD> modpow(const ModNum<MOD> &a, int n) noexcept {
+    if (n == 0)
       return 1;
-    ModNum a = pow(t >> 1);
-    a *= a;
-    if (t & 1)
-      a *= *this;
-    return a;
-  }
-  ModNum inv() const { return pow(MOD - 2); }
-
-  friend ostream &operator<<(ostream &os, const ModNum &m) {
-    os << m.num;
-    return os;
+    auto t = modpow(a, n / 2);
+    t = t * t;
+    if (n & 1)
+      t = t * a;
+    return t;
   }
 };
 
 class UnionFind {
 public:
-  vector<long> par;
+  int n;
+  vector<int> par;
 
-  UnionFind(long N) : par(N) {
-    for (long i = 0; i < N; i++)
-      par[i] = i;
-  }
-  long root(long x) {
-    if (par[x] == x)
+  UnionFind() : n(0) {}
+  UnionFind(int _n) : n(_n), par(_n, -1) {}
+  int merge(int a, int b) {
+    assert(0 <= a && a < n);
+    assert(0 <= b && b < n);
+    int x = root(a), y = root(b);
+    if (x == y)
       return x;
-    return par[x] = root(par[x]);
+    if (-par[x] < -par[y])
+      swap(x, y);
+    par[x] += par[y];
+    par[y] = x;
+    return x;
   }
-  void unite(long x, long y) {
-    long rx = root(x);
-    long ry = root(y);
-    if (rx == ry)
-      return;
-    par[rx] = ry;
+  bool isSame(int a, int b) {
+    assert(0 <= a && a < n);
+    assert(0 <= b && b < n);
+    return root(a) == root(b);
   }
-  bool isSame(long x, long y) {
-    long rx = root(x);
-    long ry = root(y);
-    return rx == ry;
+  int root(int a) {
+    assert(0 <= a && a < n);
+    if (par[a] < 0)
+      return a;
+    return par[a] = root(par[a]);
+  }
+  int size(int a) {
+    assert(0 <= a && a < n);
+    return -par[root(a)];
+  }
+  vector<vector<int>> groups() {
+    vector<int> leader_buf(n), group_size(n);
+    for (int i = 0; i < n; i++) {
+      leader_buf[i] = root(i);
+      group_size[leader_buf[i]]++;
+    }
+    vector<vector<int>> result(n);
+    for (int i = 0; i < n; i++)
+      result[i].reserve(group_size[i]);
+    for (int i = 0; i < n; i++)
+      result[leader_buf[i]].push_back(i);
+    result.erase(remove_if(result.begin(), result.end(), [&](const vector<int> &v) { return v.empty(); }), result.end());
+    return result;
   }
 };
 
-vector<long> divisor(const long &_n) {
-  vector<long> head, tail;
-  for (long i = 1; i * i <= _n; i++) {
+vector<int> divisor(const int _n) {
+  vector<int> head, tail;
+  for (int i = 1; i * i <= _n; i++) {
     if (_n % i == 0) {
       head.push_back(i);
       if (i * i != _n)
@@ -149,18 +184,26 @@ vector<long> divisor(const long &_n) {
   return head;
 }
 
-long kadanes(const vector<long> &_ls) {
-  long highestMax = 0, currentMax = 0, length = _ls.size();
-  for (long i = 0; i < length; i++) {
-    currentMax = max(_ls[i], currentMax + _ls[i]);
+int kadanes(vector<int>::iterator _begin, const vector<int>::iterator _end) {
+  int highestMax = 0, currentMax = 0;
+  for (; _begin < _end; _begin++) {
+    currentMax = max(*_begin, currentMax + *_begin);
     highestMax = max(highestMax, currentMax);
   }
   return highestMax;
 }
 
+int dichotomy(int ng,int ok,function<bool(int)> discriminant){
+  while(ok - ng > 1){
+    int mid = (ng + ok) / 2;
+    (discriminant(mid) ? ok : ng) = mid;
+  }
+  return ok;
+}
+
 void execution();
 
-int main() {
+signed main() {
   cin.tie(nullptr);
   ios::sync_with_stdio(false);
   cout << fixed << setprecision(10);
@@ -169,20 +212,14 @@ int main() {
   return 0;
 }
 
-#define int long
 //--------------------------------------------------------------
 inline void execution() {
-  int n;
-  cin>>n;
-
-  int cnt=0;
-
+  int n;cin>>n;
+  int ans=0;
   for(int i=1;i<=n;i+=2){
-    if(divisor(i).size() == 8){
-      cnt++;
-    }
+    if(divisor(i).size() == 8)
+      ans++;
   }
-
-  cout<<cnt<<"\n";
+  cout<<ans<<"\n";
 }
 
