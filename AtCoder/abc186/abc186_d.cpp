@@ -46,16 +46,6 @@
 #include <vector>
 
 #define int int64_t
-#ifdef DEBUG
-#define PRINT(var) cout << #var << ": " << var << "\n";
-#define PRINTARR(var)                \
-  cout << #var << ":\n";             \
-  for (const auto printarrvar : var) \
-    cout << "  " << printarrvar << "\n";
-#else
-  #define PRINT(var) ;
-  #define PRINTARR(var) ;
-#endif
 
 using namespace std;
 
@@ -222,30 +212,32 @@ signed main() {
   return 0;
 }
 
-#define REP(var, lim) for (int var = 0; var < lim; var++)
-#define FOR(var, begin, end) for (int var = begin; var < end; var++)
-#define ALL(var) var.begin(), var.end()
-#define LEN(var) static_cast<long long>(var.size())
 //--------------------------------------------------------------
 inline void execution() {
   int n;cin>>n;
-  vector<int> a(n);for(auto &i:a)cin>>i;
-  sort(ALL(a));
-  int beginnum=a[0];
-  for(auto &i:a)
-    i-=beginnum;
+  vector<int> a(n);
 
-  int allsum=0;
-  for(auto i:a)
-    allsum+=i;
+  int sum=0;
 
-  PRINT(allsum);
+  for (auto &i : a) {
+    cin>>i;
+  }
+
+  sort(a.begin(),a.end());
+
+  for (auto &i : a) {
+    sum+=i;
+  }
 
   int ans=0;
-  for(int i=0;i<n;i++){
-    ans+=(allsum-a[i]*(n-i));
-    allsum-=a[i];
+
+  sum-=a[0];
+
+  for (int i = 0; i < n-1; i++) {
+    ans+=sum-(a[i]*(n-i-1));
+    sum-=a[i+1];
   }
+
   cout<<ans<<"\n";
 }
 
