@@ -1,0 +1,3 @@
+[submodule "AtCoderScraper"]
+	path = AtCoderScraper
+	url = https://github.com/NULLCT/AtCoderScraper
