@@ -338,7 +338,7 @@ signed main() {
 //--------------------------------------------------------------
 inline void execution() {
   int n;cin>>n;
-  set<int> st;
+  unordered_set<int> st;
 
   int ans=0;
   while(n--){
