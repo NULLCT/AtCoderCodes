@@ -491,19 +491,21 @@ signed main() {
 //--------------------------------------------------------------
 inline void execution() {
   int n;cin>>n;
-  unordered_map<int,int> a;
+  map<int,int> a;
   for(int i:Range(n)){
     int r;cin>>r;
     a[r]++;
   }
 
+  PRINT(a);
+
   vector<int> b(n),c(n);cin>>b>>c;
 
   int ans = 0;
   for(auto &i:c){
-    auto pos = a.find(b[i-1]);
-    if(pos != a.end())
-      ans += pos->second;
+    if(a.find(b[i-1]) != a.end()){
+      ans += a[b[i-1]];
+    }
   }
   cout<<ans<<"\n";
 }
