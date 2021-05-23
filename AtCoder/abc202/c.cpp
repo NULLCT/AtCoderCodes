@@ -497,15 +497,13 @@ inline void execution() {
     a[r]++;
   }
 
-  PRINT(a);
-
   vector<int> b(n),c(n);cin>>b>>c;
 
   int ans = 0;
   for(auto &i:c){
-    if(a.find(b[i-1]) != a.end()){
-      ans += a[b[i-1]];
-    }
+    auto pos = a.find(b[i-1]);
+    if(pos != a.end())
+      ans += pos->second;
   }
   cout<<ans<<"\n";
 }
