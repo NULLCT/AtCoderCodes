@@ -491,7 +491,7 @@ signed main() {
 //--------------------------------------------------------------
 inline void execution() {
   int n;cin>>n;
-  map<int,int> a;
+  unordered_map<int,int> a;
   for(int i:Range(n)){
     int r;cin>>r;
     a[r]++;
