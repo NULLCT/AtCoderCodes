@@ -529,15 +529,16 @@ signed main() {
 }
 
 void execution() {
-  int l, q; cin >> l >> q;
-  deque<int> w({0, l});
-  while (q--) {
-    int c, x; cin >> c >> x;
-    if (c == 1) {
-      w.insert(lower_bound(ALL(w), x), x);
-    } else {
+  int l,q;cin>>l>>q;
+  deque<int> w({0, l});//その木右はしから一番左までの長さをかくのう
+  while(q--){
+    int c,x;cin>>c>>x;
+
+    if(c == 1){
+      w.insert(lower_bound(ALL(w), x),x);
+    }else{
       auto ptr = lower_bound(ALL(w), x);
-      cout << *ptr - *prev(ptr) << "\n";
+      cout<<*ptr - *prev(ptr)<<"\n";
     }
   }
 }
