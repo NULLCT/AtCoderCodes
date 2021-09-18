@@ -575,32 +575,30 @@ signed main() {
 }
 
 void execution() {
-  string x;cin>>x;
-  int n;cin>>n;
-  vector<int> pos(x.size());
-  for(int i:Range(x.size())){
-    pos[x[i] - 'a'] = i;
+  string X;
+  cin >> X;
+  vector<int> pos(26);
+  for (int i = 0; i < 26; ++i) {
+
+      pos[X[i] - 'a'] = i;
   }
+  int N;
+  cin >> N;
+  vector<vector<int>> S(N);
+  for (vector<int>& v : S) {
+      string s;
+      cin >> s;
+      for (const char c : s) {
+          v.push_back(pos[c - 'a']);
+      }
 
-  D(pos);
-
-  vector<vector<int>> s(n);
-  for(auto &i:s){
-    string t;cin>>t;
-    for(auto &j:t){
-      i.push_back(pos[j - 'a']);
-    }
   }
-
-  sort(ALL(s));
-
-  D(s);
-
-  for(auto &i:s){
-    for(auto &j:i){
-      cout<<x[j];
-    }
-    cout<<"\n";
+  sort(begin(S), end(S));
+  for (const vector<int>& s : S) {
+      for (const int x : s) {
+          cout << X[x];
+      }
+      cout << '\n';
   }
 }
 
