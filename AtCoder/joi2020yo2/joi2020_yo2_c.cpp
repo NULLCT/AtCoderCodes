@@ -593,7 +593,7 @@ int f(int x) {
 void execution() {
   int n;cin>>n;
 
-  vector<int> dp(99999999,false);
+  vector<int> dp(9999999,false);
 
   dp[n] = true;
 
