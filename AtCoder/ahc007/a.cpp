@@ -604,9 +604,16 @@ inline void execution() {
   vector<pair<int,int>> p(n);cin>>p;
   vector<pair<int,int>> u(m);cin>>u;
 
+  UnionFind unity(n);
+
   for(int i:Range(m)){
     int a;cin>>a;
-    cout<<1<<endl;
+    if(unity.isSame(u[i].first,u[i].second)){
+      cout<<0<<endl;
+    }else{
+      cout<<1<<endl;
+      unity.merge(u[i].first,u[i].second);
+    }
   }
 }
 
