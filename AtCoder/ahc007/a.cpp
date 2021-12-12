@@ -614,12 +614,9 @@ inline void execution() {
     st.insert(i);
   }
 
-  UnionFind uf(n);
-
   for(int i:Range(m)){
     int x;cin>>x;
-    if(st.find(pair(u[i])) != st.end()){
-      uf.merge(u[i].first,u[i].second);
+    if(st.find(pair(u[i])) != st.end() or st.find(pair(u[i].second,u[i].first)) != st.end()){
       cout<<1<<endl;
     }else{
       cout<<0<<endl;
