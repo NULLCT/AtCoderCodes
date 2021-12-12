@@ -463,6 +463,7 @@ public:
     return calc(tmp);
   }
   int calc(vector<pair<int, int>> &used_edge) {
+
     UnionFind uf(n);
     int res;
     int c;
@@ -546,6 +547,7 @@ vector<pair<int, int>> primeFactorize(int n) {
     }
     res.push_back({a, ex});
   }
+
   if (n != 1)
     res.push_back({n, 1});
   return res;
@@ -602,25 +604,9 @@ inline void execution() {
   vector<pair<int,int>> p(n);cin>>p;
   vector<pair<int,int>> u(m);cin>>u;
 
-  UndirectedGraph ug(n);
   for(int i:Range(m)){
-    ug.add_edge(u[i].first,u[i].second,round(sqrt(pow(p[u[i].first].first-p[u[i].second].first,2)+pow(p[u[i].first].second-p[u[i].second].second,2))));
-  }
-
-  vector<pair<int,int>> used;
-  ug.calc(used);
-  set<pair<int,int>> st;
-  for(auto &i:used){
-    st.insert(i);
-  }
-
-  for(int i:Range(m)){
-    int x;cin>>x;
-    if(st.find(pair(u[i])) != st.end() or st.find(pair(u[i].second,u[i].first)) != st.end()){
-      cout<<1<<endl;
-    }else{
-      cout<<0<<endl;
-    }
+    int a;cin>>a;
+    cout<<1<<endl;
   }
 }
 
