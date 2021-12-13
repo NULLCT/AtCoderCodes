@@ -588,13 +588,21 @@ void execution() {
   int n,d;cin>>n>>d;
   deque<pair<int,int>> w(n);cin>>w;
 
+  int ans = 0;
+
   sort(ALL(w),[](auto r,auto l){ return r.second < l.second; });
   D(w);
-  int ans = 0, x = -(1LL << 40);
-  for (auto &[l, r] : w) {
-    if (x + d - 1 < l)
-      ans++, x = r;
+
+  while(not w.empty()){
+    int pos = 0;
+    while(pos != w.size() and w[pos].first <= w[0].second+d-1)
+      pos++;
+    ans++;
+    for(int i:Range(pos)){
+      w.pop_front();
+    }
   }
-  cout << ans << "\n";
+
+  cout<<ans<<"\n";
 }
 
