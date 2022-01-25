@@ -422,24 +422,24 @@ public:
     e.to = t, e.cost = cost;
     g[s].push_back(e);
   }
-  vector<vector<int>> warshallfloyd(){
-    vector<vector<int>> d(n,vector<int>(n,INT_MAX));
-    for(int i=0;i<n;i++)
+  vector<vector<int>> warshallfloyd() {
+    vector<vector<int>> d(n, vector<int>(n, INT_MAX));
+    for (int i = 0; i < n; i++)
       d[i][i] = 0;
-    for(int i=0;i<n;i++){
-      for(Edge &j:g[i]){
-        d[i][j.to] = min(d[i][j.to],j.cost);
+    for (int i = 0; i < n; i++) {
+      for (Edge &j : g[i]) {
+        d[i][j.to] = min(d[i][j.to], j.cost);
       }
     }
 
-    for(int i=0;i<n;i++)
-      for(int j=0;j<n;j++)
-        for(int k=0;k<n;k++)
-          d[j][k] = min(d[j][k],d[j][i] + d[i][k]);
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
+        for (int k = 0; k < n; k++)
+          d[j][k] = min(d[j][k], d[j][i] + d[i][k]);
     return d;
   }
   vector<int> dijkstra(int s) {
-    vector<int> d(n,INT_MAX);
+    vector<int> d(n, INT_MAX);
     d[s] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> que;
     que.push(make_pair(0, s));
@@ -459,7 +459,7 @@ public:
     return d;
   }
   vector<int> bellmanfood(int s) {
-    vector<int> d(n,INT_MAX);
+    vector<int> d(n, INT_MAX);
     d[s] = 0;
     for (int _ = 0; _ < n; _++) {
       bool upd = false;
@@ -570,6 +570,34 @@ bool chmin(T &a, const T &b) {
   return false;
 }
 
+void _matchPair(int n, vector<vector<pair<int, int>>> &res, vector<pair<int, int>> r, set<int> trs) {
+  if (trs.size() == 0) {
+    res.push_back(r);
+    return;
+  }
+  int mem1 = *trs.begin();
+  trs.erase(trs.begin());
+  for (auto &i : trs) {
+    {
+      auto t = trs;
+      t.erase(i);
+      r.push_back({mem1, i});
+      _matchPair(n, res, r, t);
+      r.pop_back();
+    }
+  }
+}
+
+vector<vector<pair<int, int>>> matchPair(int n) {
+  set<int> trs;
+  for (int i : Range(n))
+    trs.insert(i);
+  vector<pair<int, int>> r;
+  vector<vector<pair<int, int>>> res;
+  _matchPair(n, res, r, trs);
+  return res;
+}
+
 vector<int> divisor(const int _n) {
   vector<int> head, tail;
   for (int i = 1; i * i <= _n; i++) {
@@ -644,54 +672,26 @@ signed main() {
   execution();
 }
 
-void _matchPair(int n,vector<vector<pair<int,int>>> &res,vector<pair<int,int>> r,set<int> trs){
-  if(trs.size() == 0){
-    res.push_back(r);
-    return;
-  }
-  int mem1 = *trs.begin();
-  trs.erase(trs.begin());
-  for(auto &i:trs){
-    {
-      auto t = trs;
-      t.erase(i);
-      r.push_back({mem1, i});
-      _matchPair(n,res,r,t);
-      r.pop_back();
-    }
-  }
-}
-
-vector<vector<pair<int,int>>> matchPair(int n){
-  set<int> trs;for(int i:Range(n))trs.insert(i);
-  vector<pair<int,int>> r;
-  vector<vector<pair<int,int>>> res;
-  _matchPair(n,res,r,trs);
-  return res;
-}
-
 void execution() {
   int n;cin >> n;
-  vector<vector<int>> a(2*n,vector<int>(2*n));
-  for(int i:Range(2*n-1)){
-    for(int j:Range(0,2*n-i-1)){
-      cin>>a[i][j+1+i];
-    }
-  }
-  auto r = matchPair(n*2);
-  for(auto &i:r){
-    D(i);
-  }
+
+  vector<vector<int>> a(2 * n, vector<int>(2 * n));
+  for (int i : Range(2 * n - 1))
+    for (int j : Range(0, 2 * n - i - 1))
+      cin >> a[i][j + 1 + i];
+
+  auto r = matchPair(n * 2);
   int ans = 0;
-  for(auto &j:r){
-    if(j.size() == n){
+
+  for (auto &j : r) {
+    if (j.size() == n) {
       int res = 0;
-      for(int i:Range(n)){
+      for (int i : Range(n)) {
         res ^= a[j[i].first][j[i].second];
       }
-      chmax(ans,res);
+      chmax(ans, res);
     }
   }
-  cout<<ans<<"\n";
+  cout << ans << "\n";
 }
 
