@@ -660,14 +660,11 @@ void execution() {
   for(int i:Range(n))
     acm[i+1] = acm[i] + a[i];
 
-  D(acm);
-
   map<int,int> mp;
   int ans = 0;
-  for(int i=1;i<=n;i++){
-    mp[acm[i-1]]++;
-    ans += mp[acm[i]-k];
+  for(int i:Range(n)){
+    mp[acm[i]]++;
+    ans += mp[acm[i+1]-k];
   }
   cout<<ans<<"\n";
 }
-
