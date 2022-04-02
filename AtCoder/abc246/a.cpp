@@ -1,11 +1,32 @@
+/*                 _        ____              */
+/*   AC        U  /"\  u U /"___|     AC      */
+/*              \/ _ \/  \| | u               */
+/*        AC    / ___ \   | |/__    AC        */
+/*             /_/   \_\   \____|             */
+/* AC           \\    >>  _// \\         AC   */
+/*             (__)  (__)(__)(__)             */
+/*          github.com/NULLCT/Compro          */
+/*            Copyriaht (c) NULLCT            */
+/*   Code is written at the bottom function   */
+
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
 
 #include <iostream>
-#include <unistd.h>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
+
+void execution();
+
+signed main() {
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  ios::sync_with_stdio(false);
+  ios_base::sync_with_stdio(false);
+  execution();
+}
 
 class Scanner {
   vector<char> buffer;
@@ -50,17 +71,15 @@ private:
   }
 };
 
-signed main() {
-  ios::sync_with_stdio(false);
-  ios_base::sync_with_stdio(false);
+void execution() {
   Scanner s;
-  pair<int, int> a, b, c;
-  a.first = s.read_int();
-  a.second = s.read_int();
-  b.first = s.read_int();
-  b.second = s.read_int();
-  c.first = s.read_int();
-  c.second = s.read_int();
-  cout << (a.first ^ b.first ^ c.first) << " " << (a.second ^ b.second ^ c.second) << "\n";
+  pair<int,int> a,b,c;
+  a.first=s.read_int();
+  a.second=s.read_int();
+  b.first=s.read_int();
+  b.second=s.read_int();
+  c.first=s.read_int();
+  c.second=s.read_int();
+  cout<<(a.first^b.first^c.first)<<" "<<(a.second^b.second^c.second)<<"\n";
 }
 
