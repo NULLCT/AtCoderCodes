@@ -11,8 +11,8 @@ int main() {
   cout.tie(0);
   ios::sync_with_stdio(false);
   ios_base::sync_with_stdio(false);
-  pair<int,int> a,b,c;
-  cin>>a.first>>a.second>>b.first>>b.second>>c.first>>c.second;
-  cout<<(a.first^b.first^c.first)<<" "<<(a.second^b.second^c.second)<<"\n";
+  short a,b,c, d,e,f;
+  cin>>a>>b>>c>>d>>e>>f;
+  cout<<(a^c^e)<<" "<<(b^d^f)<<"\n";
 }
 
