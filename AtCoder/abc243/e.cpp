@@ -9,7 +9,10 @@
 /*            Copyriaht (c) NULLCT            */
 /*   Code is written at the bottom function   */
 
+#pragma GCC target("avx2")
 #pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx")
 
 #include <algorithm>
 #include <array>
@@ -49,14 +52,19 @@
 
 #define int long long
 #define double long double
+#define rep(i, e) for (int i = 0; i < (e); i++)
 #define ALL(var) ((var).begin()), ((var).end())
 #ifdef DEBUG
 #define D(var) cerr << "(\e[34m" << #var << "\e[0m \e[2m@" << __LINE__ << "\e[0m): \e[36m\e[1m" << var << "\e[0m" << endl;
+#define DD(var) for_each(var.begin(), var.end(), [](const auto &i) { D(i); })
 #else
 #define D(var) ;
+#define DD(var) ;
 #endif
 
 using namespace std;
+
+constexpr array<int, 4> dx{1, 1, -1, -1}, dy{-1, 1, 1, -1};
 
 template <class T>
 ostream &operator<<(ostream &_ostr, const vector<T> &_v);
@@ -424,7 +432,7 @@ public:
     for (int i = 0; i < n; i++)
       for (int j = 0; j < n; j++)
         for (int k = 0; k < n; k++)
-          d[i][j] = min(d[i][j], d[i][j] + d[k][j]);
+          d[j][k] = min(d[j][k], d[j][i] + d[i][k]);
     return d;
   }
   // O(E+VlogV)
@@ -479,6 +487,28 @@ public:
     }
     return d;
   }
+  // O(V+E)
+  vector<int> topologicalSort() {
+    vector<int> d, ind(n);
+    for (int i = 0; i < n; i++)
+      for (auto e : g[i])
+        ind[e.to]++;
+    queue<int> que;
+    for (int i = 0; i < n; i++)
+      if (ind[i] == 0)
+        que.push(i);
+    while (!que.empty()) {
+      int now = que.front();
+      d.push_back(now);
+      que.pop();
+      for (auto e : g[now]) {
+        ind[e.to]--;
+        if (ind[e.to] == 0)
+          que.push(e.to);
+      }
+    }
+    return d;
+  }
 };
 
 class UndirectedGraph {
@@ -508,22 +538,30 @@ public:
 };
 
 class Range {
-  struct Cnt {
-    int n;
-    int add = 1;
-    int operator*() { return n; }
-    bool operator!=(const Cnt &_n) { return n < _n.n; }
-    void operator++() { n += add; }
-  };
-  Cnt st, ed;
+  int m_value;
+  const int m_end;
+  const int m_stride;
 
 public:
-  Range(const int &_ed) : st({0}), ed({_ed}) {}
-  Range(const int &_st, const int &_ed) : st({_st}), ed({_ed}) {}
-  Range(const int &_st, const int &_ed, const int &_add) : st({_st, _add}), ed({_ed, _add}) {}
-  Cnt &begin() { return st; }
-  Cnt &end() { return ed; }
+  Range(int begin, int end, int stride) : m_value(begin), m_end(end), m_stride(stride) {}
+  const int &value() const { return m_value; }
+  Range begin() const { return *this; }
+  int end() const { return m_end; }
+  bool operator!=(const int &value) const {
+    return m_stride > 0 ? m_value < value : m_value > value;
+  }
+  void operator++() { m_value += m_stride; }
+  const int &operator*() const { return m_value; }
 };
+Range range(int end) {
+  return {static_cast<int>(0), end, static_cast<int>(1)};
+}
+Range range(int begin, int end) {
+  return {begin, end, static_cast<int>(1)};
+}
+Range range(int begin, int end, int stride) {
+  return {begin, end, stride};
+}
 
 template <class T>
 bool chmax(T &a, const T &b) {
@@ -543,41 +581,13 @@ bool chmin(T &a, const T &b) {
   return false;
 }
 
-void _matchPair(int n, vector<vector<pair<int, int>>> &res, vector<pair<int, int>> r, set<int> trs) {
-  if (trs.size() == 0) {
-    res.push_back(r);
-    return;
-  }
-  int mem1 = *trs.begin();
-  trs.erase(trs.begin());
-  for (auto &i : trs) {
-    {
-      auto t = trs;
-      t.erase(i);
-      r.push_back({mem1, i});
-      _matchPair(n, res, r, t);
-      r.pop_back();
-    }
-  }
-}
-
-vector<vector<pair<int, int>>> matchPair(int n) {
-  set<int> trs;
-  for (int i : Range(n))
-    trs.insert(i);
-  vector<pair<int, int>> r;
-  vector<vector<pair<int, int>>> res;
-  _matchPair(n, res, r, trs);
-  return res;
-}
-
-vector<int> divisor(const int _n) {
+vector<int> divisor(int n) {
   vector<int> head, tail;
-  for (int i = 1; i * i <= _n; i++) {
-    if (_n % i == 0) {
+  for (int i = 1; i * i <= n; i++) {
+    if (n % i == 0) {
       head.push_back(i);
-      if (i * i != _n)
-        tail.push_back(_n / i);
+      if (i * i != n)
+        tail.push_back(n / i);
     }
   }
   head.insert(head.end(), tail.rbegin(), tail.rend());
@@ -646,33 +656,56 @@ signed main() {
 }
 
 void execution() {
-  int n,m;cin>>n>>m;
-  vector<vector<int>> g(n,vector<int>(n,INT_MAX));
-  vector<vector<int>> dist(n,vector<int>(n,INT_MAX));
 
-  for(int i:Range(m)){
-    int a,b,c;cin>>a>>b>>c;a--;b--;
+  int n, m;
+  cin >> n >> m;
+
+  vector<vector<int>> g(n, vector<int>(n, INT_MAX));
+
+  vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
+
+  for (int i : range(m)) {
+
+    int a, b, c;
+    cin >> a >> b >> c;
+    a--;
+    b--;
+
     g[a][b] = c;
+
     dist[a][b] = dist[b][a] = c;
   }
-  
-  for(int k:Range(n)) for(int i:Range(n)) for(int j:Range(n)){
-    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-  }
+
+  for (int k : range(n))
+    for (int i : range(n))
+      for (int j : range(n)) {
+
+        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+      }
 
   int ans = 0;
-  for(int i:Range(n)) for(int j:Range(n)) {
-    if(g[i][j] != INT_MAX){
-      bool tr = false;
-      for(int k:Range(n)){
-        if(dist[i][k] + dist[k][j] <= g[i][j]){
-          tr = true;
-          break;
+
+  for (int i : range(n))
+    for (int j : range(n)) {
+
+      if (g[i][j] != INT_MAX) {
+
+        bool tr = false;
+
+        for (int k : range(n)) {
+
+          if (dist[i][k] + dist[k][j] <= g[i][j]) {
+
+            tr = true;
+
+            break;
+          }
         }
+
+        ans += tr;
       }
-      ans += tr;
     }
-  }
-  cout<<ans<<"\n";
+
+  cout << ans << "\n";
 }
 
