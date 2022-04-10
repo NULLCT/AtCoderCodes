@@ -657,7 +657,7 @@ signed main() {
 
 void solve() {
   int n;cin>>n;
-  constexpr char* ans[16] = {
+  vector<string> ans{
 "1",
 "1 2 1",
 "1 2 1 3 1 2 1",
