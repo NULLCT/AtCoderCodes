@@ -9,16 +9,14 @@
 /*            Copyriaht (c) NULLCT            */
 /*   Code is written at the bottom function   */
 
-#pragma GCC target("avx2")
-#pragma GCC optimize("O3")
-#pragma GCC optimize("unroll-loops")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx")
-
 #include <iostream>
 
 using namespace std;
 
 int main() {
+  cin.tie(0);
+  cout.tie(0);
+  ios::sync_with_stdio(false);
   short n;cin>>n;
   constexpr char* ans[16] = {
 "1",
