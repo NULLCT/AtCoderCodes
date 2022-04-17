@@ -659,7 +659,7 @@ void solve() {
   int n;cin>>n;
   vector<int> a(n);cin>>a;
 
-  map<int,vector<int>> mp; // mp[i][j] -> 数字iがaのj番目にある
+  unordered_map<int,vector<int>> mp; // mp[i][j] -> 数字iがaのj番目にある
 
   for(int i:range(n))
     mp[a[i]].push_back(i);
