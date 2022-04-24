@@ -733,7 +733,7 @@ void scanRails(array<array<char,N>,N> &a){
 }
 
 void solve() {
-  srand(time(NULL));
+  srand(1024);
   for(int i:range(N*N)){
     cout<<rand()%4;
   }
