@@ -661,34 +661,31 @@ signed main() {
 }
 
 void solve() {
-  int N, W;
-  cin >> N >> W;
-  vector<int> A(N);
-  for (auto& x : A) cin >> x;
-  
-  vector<int> flag(W + 1);
-  for (int i = 0; i < N; i++) {
-    int s = A[i];
-    if (s <= W) flag[s] = 1;
+  int n,w;cin>>n>>w;
+  vector<int> a(n);cin>>a;
+  unordered_set<int> anses;
+
+  for (int i = 0; i < n; i++) {
+    anses.insert(a[i]);
   }
-  for (int i = 0; i < N; i++) {
-    for (int j = i + 1; j < N; j++) {
-      int s = A[i] + A[j];
-      if (s <= W) flag[s] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      anses.insert(a[i]+a[j]);
     }
   }
-  
-  for (int i = 0; i < N; i++) {
-    for (int j = i + 1; j < N; j++) {
-      for (int k = j + 1; k < N; k++) {
-        int s = A[i] + A[j] + A[k];
-        if (s <= W) flag[s] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      for (int k = j + 1; k < n; k++) {
+        anses.insert(a[i]+a[j]+a[k]);
       }
     }
   }
-  
+
   int ans = 0;
-  for (int i = 1; i <= W; i++) ans += flag[i];
-  cout << ans << endl;
+  for(int i=1;i<=w;i++){
+    if(anses.find(i) != anses.end())
+      ans++;
+  }
+  cout<<ans<<"\n";
 }
 
