@@ -662,7 +662,6 @@ signed main() {
 }
 
 void solve() {
-  return;
   int n, t;
   cin >> n >> t;
   vector<vector<char>> d(n, vector<char>(n));
