@@ -696,9 +696,9 @@ signed main() {
 
 void solve() {
   int n,k;cin>>n>>k;
-  valarray<int> h(n);cin>>h;
+  vector<int> h(n);cin>>h;
   
-  valarray<int> dp(LLONG_MAX,n);
+  vector<int> dp(n,LLONG_MAX);
   dp[0] = 0;
   for(int i:range(n-1)){
     for(int j:range(i+1,min(n,i+k+1))){
