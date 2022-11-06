@@ -694,54 +694,51 @@ signed main() {
   solve();
 }
 
-int snum = 0;
-
-void dfs(int s,int l,vector<bool> &trs,vector<set<int>> &g){
-  for(auto &i:g[s]){
-    if(4 <= l and i == snum){
-      cout<<"Yes\n";
-      exit(0);
-    }
-    if(not trs[i]){
-      trs[i] = true;
-      dfs(i,l+1,trs,g);
-    }
-  }
-}
-
 void solve() {
   int h,w;cin>>h>>w;
   vector<vector<char>> c(h,vector<char>(w));cin>>c;
 
+  UnionFind uf(h*w);
+
   pair<int,int> st;
-  for(int y:range(h)) for(int x:range(w))
-    if(c[y][x] == 'S')
-      st = {y,x};
 
-  constexpr int dx[] = {1,0,-1,0};
-  constexpr int dy[] = {0,-1,0,1};
-
-  vector<set<int>> g(h*w);
   auto conv = [&](int y,int x){
     return y*w + x;
   };
+
+  constexpr int dx[] = {1,0,-1,0};
+  constexpr int dy[] = {0,1,0,-1};
+
   for(int y:range(h)) for(int x:range(w)){
     for(int i:range(4)){
-      int nx = x + dx[i];
       int ny = y + dy[i];
-      if(0 <= nx and nx < w and 0 <= ny and ny < h){
-        if(c[ny][nx] == 'S' or c[ny][nx] == '.'){
-          if(c[y][x] == 'S' or c[y][x] == '.'){
-            g[conv(y,x)].insert(conv(ny,nx));
+      int nx = x + dx[i];
+      
+      if(c[y][x] == 'S')
+        st = {y,x};
+
+      if(clamp(ny,0LL,h-1) == ny and clamp(nx,0LL,w-1) == nx)
+        if(c[ny][nx] == '.')
+          if(c[y][x] == '.')
+            uf.merge(conv(y,x),conv(ny,nx));
+    }
+  }
+
+  D(uf.size(conv(st.first,st.second)));
+  for(int i:range(4)){
+    for(int j:range(i+1,4)){
+      pair<int,int> a = {st.first+dy[i],st.second+dx[i]};
+      pair<int,int> b = {st.first+dy[j],st.second+dx[j]};
+      if(clamp(a.first,0LL,h-1) == a.first and clamp(a.second,0LL,w-1) == a.second){
+        if(clamp(b.first,0LL,h-1) == b.first and clamp(b.second,0LL,w-1) == b.second){
+          if(uf.isSame(conv(a.first,a.second),conv(b.first,b.second))){
+            cout<<"Yes\n";
+            return;
           }
         }
       }
     }
   }
-  vector<bool> trs(h*w,false);
-  snum = conv(st.first,st.second);
-  trs[snum] = true;
-  dfs(snum,1,trs,g);
   cout<<"No\n";
 }
 
