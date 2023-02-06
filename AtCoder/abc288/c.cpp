@@ -414,15 +414,14 @@ public:
   int n;
   vector<int> p;
   UnionFind(int _n) : n(_n), p(_n, -1) {}
-  int merge(int a, int b) {
+  bool merge(int a, int b) {
     int x = root(a), y = root(b);
     if (x == y)
-      return x;
+      return false;
     if (-p[x] < -p[y])
       swap(x, y);
-    p[x] += p[y];
-    p[y] = x;
-    return x;
+    p[x] += p[y],p[y]=x;
+    return true;
   }
   bool isSame(int a, int b) {
     return root(a) == root(b);
@@ -758,9 +757,7 @@ void solve() {
   int ans = 0;
   for(int i:range(m)){
     int a,b;cin>>a>>b;a--;b--;
-    if(uf.isSame(a,b)) ans++;
-    uf.merge(a, b);
+    if(not uf.merge(a,b)) ans++;
   }
   cout<<ans<<"\n";
-
 }
